@@ -39,25 +39,22 @@ router.get('/', async (req, res) => {
   // Add a new book
   router.post('/', async (req, res) => {
     try {
-        if (!req.body.title || !req.body.genre || !req.body.author || !req.body.publicationDate){
-            return res.status(400).send({
-                message: "All fields are required please"
-            })
-        }
-        const newBook = {
-            title:req.body.productName,
-            author:req.body.author,
-            genre:req.body.genre,
-            publicationDate:req.body.publicationDate
-        }
-        const book = await Book.create(newBook)
-      res.status(200).json({
+        const book = new Book(req.body);
+        await book.save();
+        res.status(201).json({
+          status: 'success',
+          code: 201,
+          message: 'Book added successfully',
+          data: { book }
+        });
+        return res.status(200).json({
         status: 'success',
         code: 200,
         message: 'Book added successfully',
         data: { book }
       });
     } catch (error) {
+        console.log(error)
       res.status(400).json({ status: 'error', code: 400, message: 'Invalid data' });
     }
   });
@@ -97,4 +94,4 @@ router.get('/', async (req, res) => {
     }
   });
   
-export default router
+export default router;

@@ -6,12 +6,15 @@ import mongoose from 'mongoose'
 //creating the server
 const app = express()
 
+//middlewre to parse json files
+app.use(express.json())
+
 app.get("/", (req,res)=>{
     res.status(200).send("Hello! Welcome to InternPulse Library API")
 })
 
+//referencing the book routes
 app.use("/api/v1/books", bookRoutes)
-
 
 
 mongoose.connect(mongoDbURL).then(()=>{
